@@ -43,13 +43,25 @@ var (
 	_stdout   bool
 )
 
-func InitLogger(name string) {
-	_logPath = curDir()
+func Setup(path, name string) {
+	if "" == path {
+		_logPath = curDir()
+	} else {
+		_logPath = path
+	}
 	_logName = name
 
 	_logger = log.New(nil, "", _logFlag)
 
 	UpdateLogFile()
+}
+
+func Close() {
+	if nil != _logFile {
+		_logFile.Close()
+	}
+	_logFile = nil
+	_logger = nil
 }
 
 func SetLevel(level int) {
@@ -168,5 +180,5 @@ func detailInfo() string {
 }
 
 func init() {
-	InitLogger("")
+	Setup("", "")
 }
