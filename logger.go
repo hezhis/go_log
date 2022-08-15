@@ -49,6 +49,16 @@ func Setup(path, name string) {
 	} else {
 		_logPath = path
 	}
+
+	_, err := os.Stat(_logPath)
+	if os.IsNotExist(err) {
+		err = os.MkdirAll(_logPath, fileMode)
+	}
+
+	if nil != err {
+		log.Fatal(fmt.Sprintf("logger setup error! %v", err))
+		return
+	}
 	_logName = name
 
 	_logger = log.New(nil, "", _logFlag)
